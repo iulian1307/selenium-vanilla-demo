@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="demo-suite" thread-count="2" parallel="tests">
+    <listeners>
+        <listener class-name="com.qaitsolutions.pframe.core.testng.PFrameListener"/>
+    </listeners>
+    <test name="regression - chrome">
+        <parameter name ="browser" value="chrome"/>
+        <classes>
+            <class name="com.qaitsolutions.tests.NavigationTests"/>
+            <class name="com.qaitsolutions.tests.OwnerTests"/>
+        </classes>
+    </test>
+
+    <test name="regression - firefox">
+        <parameter name ="browser" value="firefox"/>
+        <classes>
+            <class name="com.qaitsolutions.tests.NavigationTests"/>
+            <class name="com.qaitsolutions.tests.OwnerTests"/>
+        </classes>
+    </test>
+</suite>

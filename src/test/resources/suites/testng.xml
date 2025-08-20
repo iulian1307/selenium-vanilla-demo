@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="demo-suite">
+    <listeners>
+        <listener class-name="com.qaitsolutions.pframe.core.testng.PFrameListener"/>
+    </listeners>
+    <parameter name ="browser" value="chrome"/>
+    <test name="regression">
+        <classes>
+            <class name="com.qaitsolutions.tests.NavigationTests"/>
+            <class name="com.qaitsolutions.tests.OwnerTests"/>
+            <class name="com.qaitsolutions.tests.PetTests"/>
+        </classes>
+    </test>
+</suite>

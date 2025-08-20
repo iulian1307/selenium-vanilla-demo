@@ -1,0 +1,53 @@
+version: 2.21.0
+services:
+  #ENVIRONMENT
+  web:
+    image: springcommunity/spring-framework-petclinic
+    ports:
+      - "8040:8080"
+
+#  api:
+#    image: springcommunity/spring-petclinic-rest
+#    ports:
+#      - "9966:9966"
+#
+#  database:
+#    image: mysql:5.7.8
+#    environment:
+#      - "MYSQL_USER=petclinic"
+#      - "MYSQL_PASSWORD=petclinic"
+#      - "MYSQL_ROOT_PASSWORD=root"
+#      - "MYSQL_DATABASE=petclinic"
+#    ports:
+#      - "3306:3306"
+
+  #SELENIUM GRID
+  hub:
+    image: seleniarm/hub:latest
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    environment:
+      - GRID_BROWSER_TIMEOUT=300
+      - GRID_TIMEOUT=300
+
+  chrome:
+    image: seleniarm/node-chromium:latest
+    shm_size: 2gb
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  firefox:
+    image: seleniarm/node-firefox:latest
+    shm_size: 2gb
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
