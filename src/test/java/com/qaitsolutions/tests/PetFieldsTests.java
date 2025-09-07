@@ -6,6 +6,7 @@ import com.qaitsolutions.page_objects.OwnerPage;
 import com.qaitsolutions.page_objects.OwnersListPage;
 import com.qaitsolutions.page_objects.PetClinicPage;
 import com.qaitsolutions.pframe.core.testng.PFrameListener;
+import com.qaitsolutions.selenium.wrapper.driver.Driver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -27,6 +28,8 @@ public class PetFieldsTests extends BaseTest {
                 .clickOnFindOwnerButton()
                 .selectRandomOwnerWithPet()
                 .getOwnerFromPage();
+
+        Driver.getDriver().quit();
 
         owner = owner.convertToOwnerCreate(ownerFromPage);
         pet = ownerFromPage.getPets().get(0);
