@@ -4,14 +4,13 @@ import com.qaitsolutions.data.OwnerCreateDto;
 import com.qaitsolutions.data.OwnersTableRow;
 import com.qaitsolutions.pframe.core.logging.Log;
 import com.qaitsolutions.selenium.wrapper.driver.Driver;
+import com.qaitsolutions.selenium.wrapper.wait.Sleep;
 import com.qaitsolutions.selenium.wrapper.wait.Wait;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class OwnersListPage extends HeaderPage {
@@ -67,6 +66,37 @@ public class OwnersListPage extends HeaderPage {
 
         if (found == null) {
             var message = String.format("Owner [%s] was not found in Owners List page", fullName);
+            assertions.assertWithMessage(message).hardFail();
+        }
+
+        return new OwnerPage();
+    }
+
+    public OwnerPage selectRandomOwnerWithPet() {
+        var rowsElements = Wait.defaultWait()
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(TABLE_ROWS));
+
+        var mappedRows = mapTable(rowsElements);
+        Collections.shuffle(mappedRows);
+
+        WebElement found = null;
+
+        for (OwnersTableRow row : mappedRows) {
+            if (!row.getPets().isEmpty()) {
+                found = row.getLink();
+
+                ((JavascriptExecutor) Driver.getDriver())
+                        .executeScript("arguments[0].scrollIntoView(true);", row.getLink());
+
+                Sleep.forSeconds(1);
+
+                Wait.defaultWait().until(ExpectedConditions.elementToBeClickable(found)).click();
+                break;
+            }
+        }
+
+        if (found == null) {
+            var message = "Owner was not found in Owners List page";
             assertions.assertWithMessage(message).hardFail();
         }
 

@@ -21,6 +21,15 @@ public class AddPetPage extends HeaderPage {
     private static final By TYPE_OPTION = By.id("type");
     private static final By ADD_PET_BUTTON = By.cssSelector("button.btn.btn-primary");
 
+    private static final By NAME_ERROR_TEXT =
+            By.cssSelector("form#pet div:nth-child(2) span.help-inline");
+
+    private static final By BIRTH_DATE_ERROR_TEXT =
+            By.cssSelector("form#pet div:nth-child(3) span.help-inline");
+
+    private static final By TYPE_ERROR_TEXT =
+            By.cssSelector("form#pet div:nth-child(4) span.help-inline");
+
     public AddPetPage validateOnAddPetPage() {
         var element = Wait.defaultWait()
                 .until(ExpectedConditions.visibilityOfElementLocated(PAGE_MESSAGE));
@@ -90,5 +99,31 @@ public class AddPetPage extends HeaderPage {
         selectPetType(pet.getType());
         selectBirthDate(LocalDate.parse(pet.getBirthDate()));
         return submitPet();
+    }
+
+    public AddPetPage checkNameFieldIsRequired() {
+        this.checkIsRequiredFieldError(NAME_ERROR_TEXT);
+        return this;
+    }
+
+    public AddPetPage checkBirthDateFieldIsRequired() {
+        this.checkIsRequiredFieldError(BIRTH_DATE_ERROR_TEXT);
+        return this;
+    }
+
+    public AddPetPage checkTypeFieldIsRequired() {
+        this.checkIsRequiredFieldError(TYPE_ERROR_TEXT);
+        return this;
+    }
+
+    private void checkIsRequiredFieldError(@NonNull final By fieldLocator) {
+        final var expectedErrorMessage = "is required";
+        Wait.defaultWait().until(ExpectedConditions.visibilityOfElementLocated(fieldLocator));
+        final var actualErrorMessage = Driver.getDriver().findElement(fieldLocator).getText();
+
+        final var message = "Validating that error message is [%s]";
+        assertions.assertWithMessage(message, expectedErrorMessage)
+                .assertThat(actualErrorMessage)
+                .isEqualTo(expectedErrorMessage);
     }
 }

@@ -4,10 +4,13 @@ import com.qaitsolutions.data.OwnerCreateDto;
 import com.qaitsolutions.pframe.core.logging.Log;
 import com.qaitsolutions.selenium.wrapper.driver.Driver;
 import com.qaitsolutions.selenium.wrapper.wait.Wait;
+import lombok.NonNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 public class AddOwnerPage extends HeaderPage {
 
@@ -18,6 +21,21 @@ public class AddOwnerPage extends HeaderPage {
     private static final By CITY_INPUT = By.id("city");
     private static final By TELEPHONE_INPUT = By.id("telephone");
     private static final By ADD_OWNER_BUTTON = By.cssSelector("button.btn.btn-primary");
+
+    private static final By FIRST_NAME_ERROR_TEXT =
+            By.cssSelector("form#add-owner-form > div > div:nth-child(1) span.help-inline");
+
+    private static final By LAST_NAME_ERROR_TEXT =
+            By.cssSelector("form#add-owner-form > div > div:nth-child(2) span.help-inline");
+
+    private static final By ADDRESS_ERROR_TEXT =
+            By.cssSelector("form#add-owner-form > div > div:nth-child(3) span.help-inline");
+
+    private static final By CITY_ERROR_TEXT =
+            By.cssSelector("form#add-owner-form > div > div:nth-child(4) span.help-inline");
+
+    private static final By TELEPHONE_ERROR_TEXT =
+            By.cssSelector("form#add-owner-form > div > div:nth-child(5) span.help-inline");
 
     public AddOwnerPage assertOnAddOwnerPage() {
         var element = Wait.defaultWait()
@@ -133,9 +151,81 @@ public class AddOwnerPage extends HeaderPage {
                 .insertCity(owner.getCity())
                 .insertTelephone(owner.getTelephone());
 
-        var screenshotBase64 = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BASE64);
+        final var screenshotBase64 = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BASE64);
         Log.infoWithScreenshotByBase64String("Screenshot Attached", screenshotBase64);
 
         return this.submitOwnerFail();
+    }
+
+    public AddOwnerPage checkFirstNameEmptyFieldError() {
+        this.checkEmptyFieldError(FIRST_NAME_ERROR_TEXT);
+        return this;
+    }
+
+    public AddOwnerPage checkLastNameEmptyFieldError() {
+        this.checkEmptyFieldError(LAST_NAME_ERROR_TEXT);
+        return this;
+    }
+
+    public AddOwnerPage checkAddressEmptyFieldError() {
+        this.checkEmptyFieldError(ADDRESS_ERROR_TEXT);
+        return this;
+    }
+
+    public AddOwnerPage checkCityEmptyFieldError() {
+        this.checkEmptyFieldError(CITY_ERROR_TEXT);
+        return this;
+    }
+
+    public AddOwnerPage checkTelephoneFieldError() {
+        final var numericValueError = "numeric value out of bounds (<10 digits>.<0 digits> expected)";
+        final var emptyFieldError = "must not be empty";
+
+        var expectedErrorMessages = List.of(numericValueError, emptyFieldError);
+
+        Wait.defaultWait().until(ExpectedConditions.visibilityOfElementLocated(TELEPHONE_ERROR_TEXT));
+        final var actualErrorMessage = Driver.getDriver().findElement(TELEPHONE_ERROR_TEXT).getText();
+
+        Log.warn(
+                "Known issue, telephone field throws one of two errors randomly when field is left empty. %s",
+                expectedErrorMessages
+        );
+
+        final var message = "Validating that error message is in %s";
+        assertions.assertWithMessage(message, expectedErrorMessages)
+                .assertThat(expectedErrorMessages)
+                .contains(actualErrorMessage);
+
+        return this;
+    }
+
+    public AddOwnerPage checkTelephoneEmptyFieldError() {
+        this.checkEmptyFieldError(TELEPHONE_ERROR_TEXT);
+        return this;
+    }
+
+    public AddOwnerPage checkTelephoneNumericValueError() {
+        final var expectedErrorMessage = "numeric value out of bounds (<10 digits>.<0 digits> expected)";
+
+        Wait.defaultWait().until(ExpectedConditions.visibilityOfElementLocated(TELEPHONE_ERROR_TEXT));
+        final var actualErrorMessage = Driver.getDriver().findElement(TELEPHONE_ERROR_TEXT).getText();
+
+        final var message = "Validating that error message is [%s]";
+        assertions.assertWithMessage(message, expectedErrorMessage)
+                .assertThat(actualErrorMessage)
+                .isEqualTo(expectedErrorMessage);
+
+        return this;
+    }
+
+    private void checkEmptyFieldError(@NonNull final By fieldLocator) {
+        final var expectedErrorMessage = "must not be empty";
+        Wait.defaultWait().until(ExpectedConditions.visibilityOfElementLocated(fieldLocator));
+        final var actualErrorMessage = Driver.getDriver().findElement(fieldLocator).getText();
+
+        final var message = "Validating that error message is [%s]";
+        assertions.assertWithMessage(message, expectedErrorMessage)
+                .assertThat(actualErrorMessage)
+                .isEqualTo(expectedErrorMessage);
     }
 }

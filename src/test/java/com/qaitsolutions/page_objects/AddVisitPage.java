@@ -11,12 +11,17 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class AddVisitPage extends HeaderPage {
 
     private static final By SUBMIT_BUTTON = By.cssSelector("button[type='submit']");
     private static final By DESCRIPTION_INPUT = By.id("description");
     private static final By DATE_INPUT = By.id("date");
+
+    private static final By DESCRIPTION_ERROR_TEXT = By.cssSelector("form#visit span.help-inline");
+
+    private static final By PREVIOUS_VISITS_TABLE = By.cssSelector("table[aria-describedby='previousVisits'] tr");
 
     public AddVisitPage validateOnAddVisitPage() {
         var element = Wait.defaultWait()
@@ -65,11 +70,66 @@ public class AddVisitPage extends HeaderPage {
     }
 
     public OwnerPage submitVisit() {
-        Wait.defaultWait()
-                .until(ExpectedConditions.elementToBeClickable(SUBMIT_BUTTON)).click();
+        Wait.defaultWait().until(ExpectedConditions
+                .elementToBeClickable(SUBMIT_BUTTON)).click();
 
         Wait.forSeconds(2);
 
         return new OwnerPage();
+    }
+
+    public AddVisitPage submitVisitFail() {
+        Wait.defaultWait()
+                .until(ExpectedConditions.elementToBeClickable(SUBMIT_BUTTON)).click();
+
+        return this;
+    }
+
+    public AddVisitPage validatePreviousVisitIsCorrect(VisitDto visit) {
+
+        var tableRows = Wait.defaultWait()
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(PREVIOUS_VISITS_TABLE));
+
+        var actualVisits = new ArrayList<VisitDto>();
+
+        for (int i = 1; i < tableRows.size(); i++) {
+            var columns = tableRows.get(i).findElements(By.cssSelector("td"));
+            var visitDto = new VisitDto();
+
+            for (int j = 0; j < columns.size(); j++) {
+                if (j == 0) {
+                    var date = columns.get(j).getText();
+                    date = date.replace("/", "-");
+
+                    visitDto.setDate(date);
+                } else {
+                    visitDto.setDescription(columns.get(j).getText());
+                }
+            }
+
+            actualVisits.add(visitDto);
+        }
+
+        assertions.assertWithMessage("Validating that previous visits contains", visit.toString())
+                .assertThat(actualVisits)
+                .contains(visit);
+
+        assertions.assertAll();
+
+        return this;
+    }
+
+    public AddVisitPage checkDescriptionEmptyFieldError() {
+
+        final var expectedErrorMessage = "must not be empty";
+        Wait.defaultWait().until(ExpectedConditions.visibilityOfElementLocated(DESCRIPTION_ERROR_TEXT));
+        final var actualErrorMessage = Driver.getDriver().findElement(DESCRIPTION_ERROR_TEXT).getText();
+
+        final var message = "Validating that error message is [%s]";
+        assertions.assertWithMessage(message, expectedErrorMessage)
+                .assertThat(actualErrorMessage)
+                .isEqualTo(expectedErrorMessage);
+
+        return this;
     }
 }

@@ -2,9 +2,9 @@ package com.qaitsolutions.tests;
 
 import com.qaitsolutions.pframe.core.logging.Log;
 import com.qaitsolutions.selenium.wrapper.driver.Driver;
-import com.qaitsolutions.selenium.wrapper.driver.DriverBuilder;
-import com.qaitsolutions.selenium.wrapper.wait.Wait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Parameters;
 
 public abstract class BaseTest {
 

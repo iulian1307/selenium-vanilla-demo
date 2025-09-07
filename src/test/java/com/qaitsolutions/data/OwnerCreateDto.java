@@ -23,4 +23,15 @@ public class OwnerCreateDto {
 
     @Builder.Default
     private String telephone = FAKER.numerify("07########");
+
+    public OwnerCreateDto convertToOwnerCreate(OwnerFromPageDto owner) {
+        var names = owner.getName().split(" ");
+        firstName = names[0];
+        lastName = names[1];
+        address = owner.getAddress();
+        city = owner.getCity();
+        telephone = owner.getTelephone();
+
+        return this;
+    }
 }
