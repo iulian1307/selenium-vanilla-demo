@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.github.iulian1307</groupId>
             <artifactId>pframe-core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>

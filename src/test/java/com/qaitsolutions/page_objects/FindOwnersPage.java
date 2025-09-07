@@ -40,6 +40,13 @@ public class FindOwnersPage extends HeaderPage {
         return new AddOwnerPage();
     }
 
+    public OwnersListPage clickOnFindOwnerButton() {
+        Log.info("Clicking on Find Owners Button");
+        Wait.defaultWait().until(ExpectedConditions.elementToBeClickable(FIND_OWNERS_BUTTON)).click();
+
+        return new OwnersListPage();
+    }
+
     public void findOwnerByLastName(String lastName) {
         Log.info("Finding owner by lastname: [" + lastName + "]");
 
@@ -47,8 +54,6 @@ public class FindOwnersPage extends HeaderPage {
                 .until(ExpectedConditions.elementToBeClickable(FIND_OWNERS_INPUT))
                 .sendKeys(lastName);
 
-        Log.info("Clicking on Find Owners Button");
-
-        Wait.defaultWait().until(ExpectedConditions.elementToBeClickable(FIND_OWNERS_BUTTON)).click();
+        this.clickOnFindOwnerButton();
     }
 }

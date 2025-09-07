@@ -95,7 +95,7 @@ public class PetTests extends BaseTest {
                 .validateOwnerHasPets(pet1, pet2);
     }
 
-    @Test(description = "Add pet visits", dependsOnMethods =  "createPet")
+    @Test(description = "Add pet visits", dependsOnMethods = "createPet")
     public void addPetVisits() {
         homepage.openWebpage()
                 .validateOnHomepage()
@@ -113,6 +113,7 @@ public class PetTests extends BaseTest {
                 .validatePetVisitHasBeenCreated(pet1.getName(), pet1Visit1)
                 .addPetVisit(pet1.getName())
                 .validateOnAddVisitPage()
+                .validatePreviousVisitIsCorrect(pet1Visit1)
                 .addVisit(pet1Visit2)
                 .validatePetVisitHasBeenCreated(pet1.getName(), pet1Visit2);
     }

@@ -5,18 +5,24 @@
         <listener class-name="com.qaitsolutions.pframe.core.testng.PFrameListener"/>
     </listeners>
     <test name="regression - chrome">
-        <parameter name ="browser" value="chrome"/>
+        <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.qaitsolutions.tests.NavigationTests"/>
             <class name="com.qaitsolutions.tests.OwnerTests"/>
+            <class name="com.qaitsolutions.tests.PetTests"/>
+            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
+            <class name="com.qaitsolutions.tests.PetFieldsTests"/>
         </classes>
     </test>
 
     <test name="regression - firefox">
-        <parameter name ="browser" value="firefox"/>
+        <parameter name="browser" value="firefox"/>
         <classes>
             <class name="com.qaitsolutions.tests.NavigationTests"/>
             <class name="com.qaitsolutions.tests.OwnerTests"/>
+            <class name="com.qaitsolutions.tests.PetTests"/>
+            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
+            <class name="com.qaitsolutions.tests.PetFieldsTests"/>
         </classes>
     </test>
 </suite>
