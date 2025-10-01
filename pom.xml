@@ -24,16 +24,18 @@
         <lombok.version>1.18.30</lombok.version>
         <faker.version>1.0.2</faker.version>
         <selenium.version>4.28.1</selenium.version>
+        <jackson.version>2.20.0</jackson.version>
+        <guava.version>33.0.0-jre</guava.version>
 
-        <maven.surefire.version>2.22.2</maven.surefire.version>
-        <maven.compiler.version>3.9.0</maven.compiler.version>
+        <maven.surefire.version>3.5.3</maven.surefire.version>
+        <maven.compiler.version>3.14.0</maven.compiler.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.0.0-jre</version>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>
@@ -58,6 +60,24 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
