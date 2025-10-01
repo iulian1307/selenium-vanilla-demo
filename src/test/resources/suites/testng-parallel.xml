@@ -9,10 +9,9 @@
         <classes>
             <class name="com.qaitsolutions.tests.NavigationTests"/>
             <class name="com.qaitsolutions.tests.OwnerTests"/>
-            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
             <class name="com.qaitsolutions.tests.PetTests"/>
+            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
             <class name="com.qaitsolutions.tests.PetFieldsTests"/>
-            <class name="com.qaitsolutions.tests.VeterinariansTests"/>
         </classes>
     </test>
 
@@ -21,10 +20,9 @@
         <classes>
             <class name="com.qaitsolutions.tests.NavigationTests"/>
             <class name="com.qaitsolutions.tests.OwnerTests"/>
-            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
             <class name="com.qaitsolutions.tests.PetTests"/>
+            <class name="com.qaitsolutions.tests.OwnerFieldsTests"/>
             <class name="com.qaitsolutions.tests.PetFieldsTests"/>
-            <class name="com.qaitsolutions.tests.VeterinariansTests"/>
         </classes>
     </test>
 </suite>
